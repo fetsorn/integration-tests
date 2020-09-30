@@ -1,0 +1,21 @@
+version: '2.0'
+
+services: 
+    ganache:
+        build: docker/ganache
+        command: ganache-cli -d --mnemonic "aa" -h 0.0.0.0
+
+    waves:
+        image: wavesplatform/waves-private-node
+
+    abigen:
+        build: docker/abigen
+        volumes: 
+            - ./solidity:/source:rw
+                    
+    golang:
+        image: golang
+        volumes: 
+            - ./:/go/src/rh_tests:rw
+        command: sh -c "cd /go/src/rh_tests; ./test.sh"
+
