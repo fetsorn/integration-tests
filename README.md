@@ -15,21 +15,21 @@ The integration test framework can greatly facilitate the 2d and the 3d steps of
 ## Key concepts
 The integration framework is focused on testing different aspects of the functionality of [SuSy](https://arxiv.org/ftp/arxiv/papers/2008/2008.13515.pdf), a blockchain-agnostic cross-chain asset transfer gateway protocol based on the Gravity protocol. As a reliable foundation for gateways, [Gravity](https://gravity.tech) allows them to remain trustless and decentralized. A crucial functionality required for cross-chain communication is the most basic procedure: cross-chain asset swaps. Let us start by introducing key terminology that we will use to explain Gravity, SuSy and their interaction:
 
-ORIGIN-CHAIN: a blockchain network from which a transfer originates. That is, in this network, tokens are locked and unlocked.
+*ORIGIN-CHAIN:* a blockchain network from which a transfer originates. That is, in this network, tokens are locked and unlocked.
 
-DESTINATION-CHAIN: a blockchain to which transfers are made from the ORIGIN-CHAIN. Issuance and burning of wrapped tokens take place on this network.
+*DESTINATION-CHAIN:* a blockchain to which transfers are made from the ORIGIN-CHAIN. Issuance and burning of wrapped tokens take place on this network.
 
-IB-PORT is a smart contract in DESTINATION-CHAIN ​​that implements the functionality of issuance and burning of the wrapped token.
+*IB-PORT* is a smart contract in DESTINATION-CHAIN ​​that implements the functionality of issuance and burning of the wrapped token.
 
-LU-PORT is a smart contract in ORIGIN-CHAIN that locks and unlocks the original token.
+*LU-PORT* is a smart contract in ORIGIN-CHAIN that locks and unlocks the original token.
 
-NEBULA-SC is one of the main architectural units of the Gravity protocol, a smart contract that accepts and verifies data from Gravity oracles. It implements checks of data relevance (blockchain height), availability of appropriate cryptographic signatures and threshold signature rules for transmitted data.
+*NEBULA-SC* is one of the main architectural units of the Gravity protocol, a smart contract that accepts and verifies data from Gravity oracles. It implements checks of data relevance (blockchain height), availability of appropriate cryptographic signatures and threshold signature rules for transmitted data.
 
-USER-SC is one of the main architectural units of the Gravity protocol. It is a smart contract that accepts data verified in NEBULA-SC and produces an action that is part of a custom application. In the case of SuSy, LU-PORT and IB-PORT are examples of USER-SC.
+*USER-SC* is one of the main architectural units of the Gravity protocol. It is a smart contract that accepts data verified in NEBULA-SC and produces an action that is part of a custom application. In the case of SuSy, LU-PORT and IB-PORT are examples of USER-SC.
 
-PULSE-TX is a transaction that will transfer hash from data to NEBULA-SC with  necessary signatures for verification and registration.
+*PULSE-TX* is a transaction that will transfer hash from data to NEBULA-SC with  necessary signatures for verification and registration.
 
-SEND-DATA-TX is a transaction that transfers data verified and registered in NEBULA-SC to USER-SC.
+*SEND-DATA-TX* is a transaction that transfers data verified and registered in NEBULA-SC to USER-SC.
 
 ## Running tests
 
