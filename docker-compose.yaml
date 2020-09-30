@@ -17,5 +17,6 @@ services:
         image: golang
         volumes: 
             - ./:/go/src/rh_tests:rw
+            - ./cache:/go/pkg/mod/cache/download:rw
         command: sh -c "cd /go/src/rh_tests; ./test.sh"
 

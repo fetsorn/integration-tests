@@ -22,6 +22,7 @@ type Config struct {
 	SubMockScriptFile string
 	NodeUrl           string
 	DistributionSeed  string
+	ChainId           byte
 }
 
 type RideErr struct {

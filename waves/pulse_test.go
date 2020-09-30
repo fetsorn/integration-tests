@@ -27,7 +27,6 @@ const (
 	BftValue    = 3
 	ConsulCount = 5
 	OracleCount = 5
-	ChainId     = 'S'
 	Wavelet     = 100000000
 )
 
@@ -90,23 +89,23 @@ func initTests() (*TestPulseConfig, error) {
 	testConfig.Client = wClient
 	testConfig.Helper = helpers.NewClientHelper(testConfig.Client)
 
-	testConfig.Gravity, err = GenerateAddress(ChainId)
+	testConfig.Gravity, err = GenerateAddress(cfg.ChainId)
 	if err != nil {
 		return nil, err
 	}
 
-	testConfig.Nebula, err = GenerateAddress(ChainId)
+	testConfig.Nebula, err = GenerateAddress(cfg.ChainId)
 	if err != nil {
 		return nil, err
 	}
 
-	testConfig.Sub, err = GenerateAddress(ChainId)
+	testConfig.Sub, err = GenerateAddress(cfg.ChainId)
 	if err != nil {
 		return nil, err
 	}
 
 	for i := 0; i < ConsulCount; i++ {
-		consul, err := GenerateAddress(ChainId)
+		consul, err := GenerateAddress(cfg.ChainId)
 		if err != nil {
 			return nil, err
 		}
@@ -114,7 +113,7 @@ func initTests() (*TestPulseConfig, error) {
 		testConfig.Consuls = append(testConfig.Consuls, consul)
 	}
 	for i := 0; i < OracleCount; i++ {
-		oracle, err := GenerateAddress(ChainId)
+		oracle, err := GenerateAddress(cfg.ChainId)
 		if err != nil {
 			return nil, err
 		}
@@ -186,7 +185,7 @@ func initTests() (*TestPulseConfig, error) {
 		},
 		Attachment: &proto.LegacyAttachment{},
 	}
-	err = massTx.Sign(ChainId, distributionSeed)
+	err = massTx.Sign(cfg.ChainId, distributionSeed)
 	if err != nil {
 		return nil, err
 	}
@@ -203,12 +202,12 @@ func initTests() (*TestPulseConfig, error) {
 	for _, v := range testConfig.Consuls {
 		consulsString = append(consulsString, v.Address)
 	}
-	err = deployer.DeployGravityWaves(testConfig.Client, testConfig.Helper, gravityScript, consulsString, BftValue, ChainId, testConfig.Gravity.Secret, testConfig.Ctx)
+	err = deployer.DeployGravityWaves(testConfig.Client, testConfig.Helper, gravityScript, consulsString, BftValue, cfg.ChainId, testConfig.Gravity.Secret, testConfig.Ctx)
 	if err != nil {
 		return nil, err
 	}
 
-	err = deployer.DeploySubWaves(testConfig.Client, testConfig.Helper, subScript, ChainId, testConfig.Sub.Secret, testConfig.Ctx)
+	err = deployer.DeploySubWaves(testConfig.Client, testConfig.Helper, subScript, cfg.ChainId, testConfig.Sub.Secret, testConfig.Ctx)
 	if err != nil {
 		return nil, err
 	}
@@ -218,7 +217,7 @@ func initTests() (*TestPulseConfig, error) {
 		oraclesString = append(oraclesString, v.PubKey.String())
 	}
 	err = deployer.DeployNebulaWaves(testConfig.Client, testConfig.Helper, nebulaScript, testConfig.Gravity.Address,
-		testConfig.Sub.Address, oraclesString, BftValue, contracts.BytesType, ChainId, testConfig.Nebula.Secret, testConfig.Ctx)
+		testConfig.Sub.Address, oraclesString, BftValue, contracts.BytesType, cfg.ChainId, testConfig.Nebula.Secret, testConfig.Ctx)
 	if err != nil {
 		return nil, err
 	}
@@ -227,6 +226,8 @@ func initTests() (*TestPulseConfig, error) {
 }
 
 func testSendHashPositive(t *testing.T) {
+	cfg, _ := LoadConfig("config.json")
+
 	id := make([]byte, 32)
 	_, err := rand.Read(id)
 	if err != nil {
@@ -257,7 +258,7 @@ func testSendHashPositive(t *testing.T) {
 		Type:     proto.InvokeScriptTransaction,
 		Version:  1,
 		SenderPK: config.Oracles[0].PubKey,
-		ChainID:  ChainId,
+		ChainID:  cfg.ChainId,
 		FunctionCall: proto.FunctionCall{
 			Name: "sendHashValue",
 			Arguments: proto.Arguments{
@@ -273,7 +274,7 @@ func testSendHashPositive(t *testing.T) {
 		Timestamp:       wavesClient.NewTimestampFromTime(time.Now()),
 		ScriptRecipient: proto.NewRecipientFromAddress(recipient),
 	}
-	err = tx.Sign(ChainId, config.Oracles[0].Secret)
+	err = tx.Sign(cfg.ChainId, config.Oracles[0].Secret)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -287,6 +288,8 @@ func testSendHashPositive(t *testing.T) {
 	}
 }
 func testSendHashInvalidSigns(t *testing.T) {
+	cfg, _ := LoadConfig("config.json")
+
 	id := make([]byte, 32)
 	_, err := rand.Read(id)
 	if err != nil {
@@ -321,7 +324,7 @@ func testSendHashInvalidSigns(t *testing.T) {
 		Type:     proto.InvokeScriptTransaction,
 		Version:  1,
 		SenderPK: config.Oracles[0].PubKey,
-		ChainID:  ChainId,
+		ChainID:  cfg.ChainId,
 		FunctionCall: proto.FunctionCall{
 			Name: "sendHashValue",
 			Arguments: proto.Arguments{
@@ -337,7 +340,7 @@ func testSendHashInvalidSigns(t *testing.T) {
 		Timestamp:       wavesClient.NewTimestampFromTime(time.Now()),
 		ScriptRecipient: proto.NewRecipientFromAddress(recipient),
 	}
-	err = tx.Sign(ChainId, config.Oracles[0].Secret)
+	err = tx.Sign(cfg.ChainId, config.Oracles[0].Secret)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -354,6 +357,8 @@ func testSendHashInvalidSigns(t *testing.T) {
 }
 
 func testSendSubPositive(t *testing.T) {
+	cfg, _ := LoadConfig("config.json")
+
 	id := make([]byte, 32)
 	_, err := rand.Read(id)
 	if err != nil {
@@ -383,7 +388,7 @@ func testSendSubPositive(t *testing.T) {
 		Type:     proto.InvokeScriptTransaction,
 		Version:  1,
 		SenderPK: config.Oracles[0].PubKey,
-		ChainID:  ChainId,
+		ChainID:  cfg.ChainId,
 		FunctionCall: proto.FunctionCall{
 			Name: "sendHashValue",
 			Arguments: proto.Arguments{
@@ -400,7 +405,7 @@ func testSendSubPositive(t *testing.T) {
 		ScriptRecipient: proto.NewRecipientFromAddress(recipient),
 	}
 
-	err = tx.Sign(ChainId, config.Oracles[0].Secret)
+	err = tx.Sign(cfg.ChainId, config.Oracles[0].Secret)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -427,7 +432,7 @@ func testSendSubPositive(t *testing.T) {
 		Type:     proto.InvokeScriptTransaction,
 		Version:  1,
 		SenderPK: config.Nebula.PubKey,
-		ChainID:  ChainId,
+		ChainID:  cfg.ChainId,
 		FunctionCall: proto.FunctionCall{
 			Name: "attachValue",
 			Arguments: proto.Arguments{
@@ -444,7 +449,7 @@ func testSendSubPositive(t *testing.T) {
 		ScriptRecipient: proto.NewRecipientFromAddress(recipient),
 	}
 
-	err = tx.Sign(ChainId, config.Oracles[0].Secret)
+	err = tx.Sign(cfg.ChainId, config.Oracles[0].Secret)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -471,6 +476,8 @@ func testSendSubPositive(t *testing.T) {
 	}
 }
 func testSendSubInvalidHash(t *testing.T) {
+	cfg, _ := LoadConfig("config.json")
+
 	id := make([]byte, 32)
 	_, err := rand.Read(id)
 	if err != nil {
@@ -500,7 +507,7 @@ func testSendSubInvalidHash(t *testing.T) {
 		Type:     proto.InvokeScriptTransaction,
 		Version:  1,
 		SenderPK: config.Oracles[0].PubKey,
-		ChainID:  ChainId,
+		ChainID:  cfg.ChainId,
 		FunctionCall: proto.FunctionCall{
 			Name: "sendHashValue",
 			Arguments: proto.Arguments{
@@ -517,7 +524,7 @@ func testSendSubInvalidHash(t *testing.T) {
 		ScriptRecipient: proto.NewRecipientFromAddress(recipient),
 	}
 
-	err = tx.Sign(ChainId, config.Oracles[0].Secret)
+	err = tx.Sign(cfg.ChainId, config.Oracles[0].Secret)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -544,7 +551,7 @@ func testSendSubInvalidHash(t *testing.T) {
 		Type:     proto.InvokeScriptTransaction,
 		Version:  1,
 		SenderPK: config.Nebula.PubKey,
-		ChainID:  ChainId,
+		ChainID:  cfg.ChainId,
 		FunctionCall: proto.FunctionCall{
 			Name: "attachValue",
 			Arguments: proto.Arguments{
@@ -561,7 +568,7 @@ func testSendSubInvalidHash(t *testing.T) {
 		ScriptRecipient: proto.NewRecipientFromAddress(recipient),
 	}
 
-	err = tx.Sign(ChainId, config.Oracles[0].Secret)
+	err = tx.Sign(cfg.ChainId, config.Oracles[0].Secret)
 	if err != nil {
 		t.Fatal(err)
 	}
