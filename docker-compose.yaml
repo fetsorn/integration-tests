@@ -5,6 +5,10 @@ services:
         build: docker/ganache
         command: ganache-cli -d --mnemonic "aa" -h 0.0.0.0
 
+    geth-bsc:
+        image: dysnix/bsc
+        command: --datadir test-chain-dir --rpc --dev --rpcvhosts=* --rpccorsdomain "*" --rpcaddr 0.0.0.0 --rpcapi="db,eth,net,web3,personal,web3" --allow-insecure-unlock
+
     waves:
         image: wavesplatform/waves-private-node
 
@@ -19,4 +23,3 @@ services:
             - ./:/go/src/rh_tests:rw
             - ./cache:/go/pkg/mod/cache/download:rw
         command: sh -c "cd /go/src/rh_tests; ./test.sh"
-
