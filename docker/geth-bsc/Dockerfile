@@ -1,9 +1,20 @@
-# for manual build (not used with the docker image)
-FROM golang
+# Build Geth in a stock Go builder container
+FROM golang:1.14-alpine as builder
 
-RUN git clone https://github.com/binance-chain/bsc
+RUN apk add --no-cache make gcc musl-dev linux-headers git
+
+RUN mkdir /bsc
+COPY ./bsc /bsc
 WORKDIR /bsc
-COPY . /bsc
 RUN make geth
 
-CMD [ "./build/bin/geth", "--datadir", "test-chain-dir", "--rpc", "--dev", "--rpcaddr", "0.0.0.0"]
+# Pull Geth into a second stage deploy alpine container
+FROM alpine:latest
+
+RUN apk add --no-cache ca-certificates
+COPY --from=builder /bsc/build/bin/geth /usr/local/bin/
+
+EXPOSE 8545 8546 8547 30303 30303/udp
+COPY genesis.json .
+RUN geth --datadir test-chain-dir init genesis.json
+CMD [ "geth", "--datadir", "test-chain-dir", "--rpc", "--rpcaddr", "0.0.0.0", "--rpcvhosts", "*", "--rpccorsdomain", "*", "--nodiscover", "--maxpeers", "0"] 

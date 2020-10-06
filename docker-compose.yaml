@@ -5,6 +5,9 @@ services:
         build: docker/ganache
         command: ganache-cli -d --mnemonic "aa" -h 0.0.0.0
 
+    geth-bsc-build: 
+        build: docker/geth-bsc
+    
     geth-bsc:
         image: dysnix/bsc
         command: --datadir test-chain-dir --rpc --dev --rpcvhosts=* --rpccorsdomain "*" --rpcaddr 0.0.0.0 --rpcapi="db,eth,net,web3,personal,web3" --allow-insecure-unlock
