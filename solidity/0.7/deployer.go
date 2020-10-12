@@ -9,6 +9,7 @@ import (
 	"crypto/ecdsa"
 	"context"
 	"log"
+	"fmt"
 	"math/big"
 	"github.com/ethereum/go-ethereum/ethclient"
 	"github.com/ethereum/go-ethereum/crypto"
@@ -205,7 +206,22 @@ func main() {
 
 	fromAddress := crypto.PubkeyToAddress(*publicKeyECDSA)
 
+
+	    gasPrice, err := ethConnection.SuggestGasPrice(context.Background())
+	    if err != nil {
+		log.Fatal(err)
+	    }
+
+
 	transactor := bind.NewKeyedTransactor(privateKey)
+
+	// transactor.Nonce = big.NewInt(int64(nonce))
+	// transactor.Value = big.NewInt(0)     // in wei
+
+	transactor.GasLimit = uint64(1) // in units
+	transactor.GasPrice = big.NewInt(18e9)
+
+	fmt.Printf("Transactor: %+v; GasPriceUnused: %v; From: %v; PubKey: %v \n", transactor, gasPrice, privateKey, publicKey)
 
 	deployGravity(&addresses, fromAddress, ethConnection, transactor, &config)
 	deployIBPort(&addresses, fromAddress, ethConnection, transactor, &config)
