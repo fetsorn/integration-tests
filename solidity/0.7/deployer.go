@@ -164,6 +164,8 @@ func deployLUPort(addresses *helpers.DeployedAddresses, fromAddress common.Addre
 
 func deployGravity(addresses *helpers.DeployedAddresses, fromAddress common.Address, ethConnection *ethclient.Client, transactor *bind.TransactOpts, config *helpers.Config) {
 	oracles := oraclesFromPK(config.OraclePK)
+
+	fmt.Printf("Oracles: %v \n", config.OraclePK)
 	
 	gravityAddress, tx, _, err := gravity.DeployGravity(transactor, ethConnection, oracles[:], big.NewInt(1))
 	if err != nil {
@@ -218,7 +220,7 @@ func main() {
 	// transactor.Nonce = big.NewInt(int64(nonce))
 	// transactor.Value = big.NewInt(0)     // in wei
 
-	transactor.GasLimit = uint64(1) // in units
+	transactor.GasLimit = uint64(300000) // in units
 	transactor.GasPrice = big.NewInt(18e9)
 
 	fmt.Printf("Transactor: %+v; GasPriceUnused: %v; From: %v; PubKey: %v \n", transactor, gasPrice, privateKey, publicKey)
