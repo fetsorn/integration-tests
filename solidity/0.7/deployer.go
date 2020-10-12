@@ -1,38 +1,39 @@
 package main
 
 import (
+	"context"
+	"crypto/ecdsa"
+	"fmt"
+	"log"
+	"math/big"
 	"rh_tests/api/gravity"
-	"rh_tests/api/nebula"
 	"rh_tests/api/ibport"
 	"rh_tests/api/luport"
+	"rh_tests/api/nebula"
 	"rh_tests/helpers"
-	"crypto/ecdsa"
-	"context"
-	"log"
-	"fmt"
-	"math/big"
-	"github.com/ethereum/go-ethereum/ethclient"
-	"github.com/ethereum/go-ethereum/crypto"
+
+	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 	"github.com/ethereum/go-ethereum/common"
-    "github.com/ethereum/go-ethereum/accounts/abi/bind"
+	"github.com/ethereum/go-ethereum/crypto"
+	"github.com/ethereum/go-ethereum/ethclient"
 )
 
-func pubFromPK(pk string) (common.Address) {
+func pubFromPK(pk string) common.Address {
 	privateKey, err := crypto.HexToECDSA(pk)
-    if err != nil {
-        log.Fatal(err)
-    }
+	if err != nil {
+		log.Fatal(err)
+	}
 
-    publicKey := privateKey.Public()
-    publicKeyECDSA, ok := publicKey.(*ecdsa.PublicKey)
-    if !ok {
-        log.Fatal("error casting public key to ECDSA")
-    }
+	publicKey := privateKey.Public()
+	publicKeyECDSA, ok := publicKey.(*ecdsa.PublicKey)
+	if !ok {
+		log.Fatal("error casting public key to ECDSA")
+	}
 
-    return crypto.PubkeyToAddress(*publicKeyECDSA)
+	return crypto.PubkeyToAddress(*publicKeyECDSA)
 }
 
-func oraclesFromPK(oraclePK [5]string) ([5]common.Address) {
+func oraclesFromPK(oraclePK [5]string) [5]common.Address {
 	var oracles [5]common.Address
 	for i := 0; i < 5; i++ {
 		oracles[i] = pubFromPK(oraclePK[i])
@@ -92,7 +93,7 @@ func deployIBPort(addresses *helpers.DeployedAddresses, fromAddress common.Addre
 	if err != nil {
 		log.Fatal(err)
 	}
-	
+
 	newSubEvent, err := nebula.NebulaFilterer.ParseNewSubscriber(*receipt.Logs[0])
 	if err != nil {
 		log.Fatal(err)
@@ -153,7 +154,7 @@ func deployLUPort(addresses *helpers.DeployedAddresses, fromAddress common.Addre
 	if err != nil {
 		log.Fatal(err)
 	}
-	
+
 	newSubEvent, err := nebula.NebulaFilterer.ParseNewSubscriber(*receipt.Logs[0])
 	if err != nil {
 		log.Fatal(err)
@@ -166,7 +167,7 @@ func deployGravity(addresses *helpers.DeployedAddresses, fromAddress common.Addr
 	oracles := oraclesFromPK(config.OraclePK)
 
 	fmt.Printf("Oracles: %v \n", config.OraclePK)
-	
+
 	gravityAddress, tx, _, err := gravity.DeployGravity(transactor, ethConnection, oracles[:], big.NewInt(1))
 	if err != nil {
 		log.Fatal(err)
@@ -208,20 +209,15 @@ func main() {
 
 	fromAddress := crypto.PubkeyToAddress(*publicKeyECDSA)
 
-
-	    gasPrice, err := ethConnection.SuggestGasPrice(context.Background())
-	    if err != nil {
+	gasPrice, err := ethConnection.SuggestGasPrice(context.Background())
+	if err != nil {
 		log.Fatal(err)
-	    }
-
+	}
 
 	transactor := bind.NewKeyedTransactor(privateKey)
 
 	// transactor.Nonce = big.NewInt(int64(nonce))
 	// transactor.Value = big.NewInt(0)     // in wei
-
-	transactor.GasLimit = uint64(300000) // in units
-	transactor.GasPrice = big.NewInt(18e9)
 
 	fmt.Printf("Transactor: %+v; GasPriceUnused: %v; From: %v; PubKey: %v \n", transactor, gasPrice, privateKey, publicKey)
 
