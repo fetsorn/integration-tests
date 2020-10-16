@@ -1,0 +1,3 @@
+[submodule "docker/geth-bsc/bsc"]
+	path = docker/geth-bsc/bsc
+	url = https://github.com/binance-chain/bsc.git

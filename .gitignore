@@ -2,3 +2,4 @@ addresses.json
 cache
 waves/config.json
 solidity/0.7/config.json
+.DS_Store
