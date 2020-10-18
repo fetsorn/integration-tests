@@ -50,7 +50,7 @@ func deployIBPort(addresses *helpers.DeployedAddresses, fromAddress common.Addre
 	addresses.ERC20Mintable = common.Bytes2Hex(erc20MintableAddr.Bytes())
 
 	oracles := oraclesFromPK(config.OraclePK)
-	nebulaAddr, tx, nebula, err := nebula.DeployNebula(transactor, ethConnection, 0, oracles[0], oracles[:], big.NewInt(3))
+	nebulaAddr, tx, nebula, err := nebula.DeployNebula(transactor, ethConnection, 0, common.HexToAddress(addresses.Gravity), oracles[:], big.NewInt(3))
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -111,7 +111,7 @@ func deployLUPort(addresses *helpers.DeployedAddresses, fromAddress common.Addre
 	addresses.ERC20 = common.Bytes2Hex(erc20Addr.Bytes())
 
 	oracles := oraclesFromPK(config.OraclePK)
-	nebulaReverseAddr, tx, nebula, err := nebula.DeployNebula(transactor, ethConnection, 0, oracles[0], oracles[:], big.NewInt(3))
+	nebulaReverseAddr, tx, nebula, err := nebula.DeployNebula(transactor, ethConnection, 0, common.HexToAddress(addresses.Gravity), oracles[:], big.NewInt(3))
 	if err != nil {
 		log.Fatal(err)
 	}
