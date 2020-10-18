@@ -42,10 +42,11 @@ Supported networks:
 - TRON testnet SHASTA
 - WAVES testnet "stagenet"
 - WAVES private net (launched in a Docker container)
+- Binance Smart Chain testnet (through Ankr Smartchain Full Node)
 
 The source code of SYSTEM-SC and NEBULA-SC should be placed in the corresponding folders:
 
-- solidity/0.7/Nebula|Token|IBPort|LUPort - for Ethereum testnet and privatenet
+- solidity/0.7/Nebula|Token|IBPort|LUPort - for Ethereum testnet and privatenet and BSC testnet
 - Nebula|Token|IBPort|LUPort - for TRON
 - waves/scripts/gravity|nebula (TODO: at this moment, it requires an already compiled base64, compilation from source code is a work in progress).
 
@@ -54,6 +55,7 @@ When using testnet, you may need to pre-fund the below addresses with test coins
 - for WAVES testnet STAGENET: 3MUBYCv4iHmmCA16z8GzKTSc3Fj1umn8Jb
 - for Ethereum testnet ROPSTEN: 0x90F8bf6A479f320ead074411a4B0e7944Ea8c9C1
 - for TRON testnet SHASTA: THxQonMCidbEgQSFxWcEgkyw1YfdpiqGz6
+- for BSC testnet: 0x657FeC03D0a19Ad719903E3ee1339B762627100d
 
 Run a `test-*.sh` bash-script with an appropriate name, for instance, test-eth-private.sh to test contracts in Ethereum private network.
 
