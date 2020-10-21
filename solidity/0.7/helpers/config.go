@@ -9,6 +9,7 @@ import (
 type Config struct {
 	Endpoint string    `json:"endpoint"`
 	OraclePK [5]string `json:"oraclepk"`
+	Gravity string     `json:"gravity"`
 }
 
 type DeployedAddresses struct {

@@ -42,7 +42,7 @@ func oraclesFromPK(oraclePK [5]string) [5]common.Address {
 }
 
 func deployIBPort(addresses *helpers.DeployedAddresses, fromAddress common.Address, ethConnection *ethclient.Client, transactor *bind.TransactOpts, config *helpers.Config) {
-	erc20MintableAddr, tx, tokenMintable, err := ibport.DeployToken(transactor, ethConnection, "TSTM", "TST mintable")
+	erc20MintableAddr, tx, tokenMintable, err := ibport.DeployToken(transactor, ethConnection, "SIGN", "SIGN")
 
 	if err != nil {
 		log.Fatal(err)
@@ -52,7 +52,7 @@ func deployIBPort(addresses *helpers.DeployedAddresses, fromAddress common.Addre
 	addresses.ERC20Mintable = common.Bytes2Hex(erc20MintableAddr.Bytes())
 
 	oracles := oraclesFromPK(config.OraclePK)
-	nebulaAddr, tx, nebula, err := nebula.DeployNebula(transactor, ethConnection, 0, common.HexToAddress(addresses.Gravity), oracles[:], big.NewInt(3))
+	nebulaAddr, tx, nebula, err := nebula.DeployNebula(transactor, ethConnection, 2, common.HexToAddress(addresses.Gravity), oracles[:], big.NewInt(1))
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -103,7 +103,7 @@ func deployIBPort(addresses *helpers.DeployedAddresses, fromAddress common.Addre
 }
 
 func deployLUPort(addresses *helpers.DeployedAddresses, fromAddress common.Address, ethConnection *ethclient.Client, transactor *bind.TransactOpts, config *helpers.Config) {
-	erc20Addr, tx, token, err := luport.DeployToken(transactor, ethConnection, "TST", "TST")
+	erc20Addr, tx, token, err := luport.DeployToken(transactor, ethConnection, "SIGN", "SIGN")
 
 	if err != nil {
 		log.Fatal(err)
@@ -113,7 +113,7 @@ func deployLUPort(addresses *helpers.DeployedAddresses, fromAddress common.Addre
 	addresses.ERC20 = common.Bytes2Hex(erc20Addr.Bytes())
 
 	oracles := oraclesFromPK(config.OraclePK)
-	nebulaReverseAddr, tx, nebula, err := nebula.DeployNebula(transactor, ethConnection, 0, common.HexToAddress(addresses.Gravity), oracles[:], big.NewInt(3))
+	nebulaReverseAddr, tx, nebula, err := nebula.DeployNebula(transactor, ethConnection, 2, common.HexToAddress(addresses.Gravity), oracles[:], big.NewInt(1))
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -164,6 +164,11 @@ func deployLUPort(addresses *helpers.DeployedAddresses, fromAddress common.Addre
 }
 
 func deployGravity(addresses *helpers.DeployedAddresses, fromAddress common.Address, ethConnection *ethclient.Client, transactor *bind.TransactOpts, config *helpers.Config) {
+	if config.Gravity != "" {
+		addresses.Gravity = config.Gravity[2:]
+		return
+	}
+
 	oracles := oraclesFromPK(config.OraclePK)
 
 	fmt.Printf("Oracles: %v \n", config.OraclePK)
