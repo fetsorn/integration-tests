@@ -3,12 +3,12 @@ module rh_tests
 go 1.14
 
 require (
-	github.com/Gravity-Tech/gravity-core v1.0.2-0.20201021214847-79e765399c5e
+	github.com/Gravity-Tech/gravity-core v1.0.2-0.20201022162643-e76bd9c8f251
 	github.com/StackExchange/wmi v0.0.0-20190523213315-cbe66965904d // indirect
 	github.com/aristanetworks/goarista v0.0.0-20201012165903-2cb20defcd66 // indirect
 	github.com/btcsuite/btcd v0.21.0-beta // indirect
 	github.com/deckarep/golang-set v1.7.1 // indirect
-	github.com/ethereum/go-ethereum v1.9.18
+	github.com/ethereum/go-ethereum v1.9.23
 	github.com/gballet/go-libpcsclite v0.0.0-20191108122812-4678299bea08 // indirect
 	github.com/go-ole/go-ole v1.2.4 // indirect
 	github.com/golang/protobuf v1.4.3 // indirect

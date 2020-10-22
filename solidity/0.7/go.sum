@@ -23,6 +23,8 @@ github.com/Gravity-Tech/gravity-core v1.0.1 h1:yehR/yznOdhKP0s3JglgEW00HN8l3QKag
 github.com/Gravity-Tech/gravity-core v1.0.1/go.mod h1:Rejwy5UHrpjUwueUIQ8CtDKaPObAedU6br6t6YSZIf0=
 github.com/Gravity-Tech/gravity-core v1.0.2-0.20201021214847-79e765399c5e h1:yESORNzSh3cxVmlXStR1nB34A/QEeOVLlmAM13mirT0=
 github.com/Gravity-Tech/gravity-core v1.0.2-0.20201021214847-79e765399c5e/go.mod h1:Rejwy5UHrpjUwueUIQ8CtDKaPObAedU6br6t6YSZIf0=
+github.com/Gravity-Tech/gravity-core v1.0.2-0.20201022162643-e76bd9c8f251 h1:8UgoMBCblQYfzRHSUbjUFfQdKrHczCSKfHrwH91F8VA=
+github.com/Gravity-Tech/gravity-core v1.0.2-0.20201022162643-e76bd9c8f251/go.mod h1:BhkZFfq0hRMHhA9IjOrX4hlTgOO6Octnnzfp4zfuvq4=
 github.com/Knetic/govaluate v3.0.1-0.20171022003610-9aa49832a739+incompatible/go.mod h1:r7JcOSlj0wfOMncg0iLm8Leh48TZaKVeNIfJntJ2wa0=
 github.com/OneOfOne/xxhash v1.2.2/go.mod h1:HSdplMjZKSmBqAxg5vPj2TmRDmfkzw+cTzAElWljhcU=
 github.com/OneOfOne/xxhash v1.2.5/go.mod h1:eZbhyaAYD41SGSSsnmcpxVoRiQ/MPUTjUdIIOT9Um7Q=
