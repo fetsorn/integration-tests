@@ -82,7 +82,7 @@ contract IBPort is ISubscriberBytes {
 
     function mint(uint swapId, uint amount, address receiver) internal {
         require(swapStatus[swapId] == RequestStatus.None, "invalid request status");
-        Token(tokenAddress).mint(receiver, amount);
+        tokenAddress.mint(receiver, amount);
         swapStatus[swapId] = RequestStatus.Success;
     }
 

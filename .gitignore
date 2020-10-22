@@ -2,4 +2,6 @@ addresses.json
 cache
 waves/config.json
 solidity/0.7/config.json
+solidity/0.7/config.devnet.json
+deploy-eth-devnet.sh
 .DS_Store

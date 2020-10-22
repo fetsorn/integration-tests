@@ -7,7 +7,7 @@ contract Token is ERC20PresetMinterPauser {
         
     }
 
-    function addMinter(address minter) public {
+    function addMinter(address minter) external {
         require(hasRole(MINTER_ROLE, _msgSender()), "ERC20PresetMinterPauser: must have minter role to add minter");
         _setupRole(MINTER_ROLE, minter);
     }
