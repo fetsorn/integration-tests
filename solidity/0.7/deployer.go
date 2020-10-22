@@ -3,13 +3,12 @@ package main
 import (
 	"context"
 	"crypto/ecdsa"
-	"fmt"
 	"log"
 	"math/big"
-	"rh_tests/api/gravity"
 	"rh_tests/api/ibport"
 	"rh_tests/api/luport"
-	"rh_tests/api/nebula"
+	"github.com/Gravity-Tech/gravity-core/common/contracts"
+
 	"rh_tests/helpers"
 
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
@@ -52,7 +51,7 @@ func deployIBPort(addresses *helpers.DeployedAddresses, fromAddress common.Addre
 	addresses.ERC20Mintable = common.Bytes2Hex(erc20MintableAddr.Bytes())
 
 	oracles := oraclesFromPK(config.OraclePK)
-	nebulaAddr, tx, nebula, err := nebula.DeployNebula(transactor, ethConnection, 0, oracles[0], oracles[:], big.NewInt(3))
+	nebulaAddr, tx, nebula, err := contracts.DeployNebula(transactor, ethConnection, 0, oracles[0], oracles[:], big.NewInt(3))
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -113,7 +112,7 @@ func deployLUPort(addresses *helpers.DeployedAddresses, fromAddress common.Addre
 	addresses.ERC20 = common.Bytes2Hex(erc20Addr.Bytes())
 
 	oracles := oraclesFromPK(config.OraclePK)
-	nebulaReverseAddr, tx, nebula, err := nebula.DeployNebula(transactor, ethConnection, 0, oracles[0], oracles[:], big.NewInt(3))
+	nebulaReverseAddr, tx, nebula, err := contracts.DeployNebula(transactor, ethConnection, 0, oracles[0], oracles[:], big.NewInt(3))
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -166,9 +165,7 @@ func deployLUPort(addresses *helpers.DeployedAddresses, fromAddress common.Addre
 func deployGravity(addresses *helpers.DeployedAddresses, fromAddress common.Address, ethConnection *ethclient.Client, transactor *bind.TransactOpts, config *helpers.Config) {
 	oracles := oraclesFromPK(config.OraclePK)
 
-	fmt.Printf("Oracles: %v \n", config.OraclePK)
-
-	gravityAddress, tx, _, err := gravity.DeployGravity(transactor, ethConnection, oracles[:], big.NewInt(1))
+	gravityAddress, tx, _, err := contracts.DeployGravity(transactor, ethConnection, oracles[:], big.NewInt(1))
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -209,17 +206,7 @@ func main() {
 
 	fromAddress := crypto.PubkeyToAddress(*publicKeyECDSA)
 
-	gasPrice, err := ethConnection.SuggestGasPrice(context.Background())
-	if err != nil {
-		log.Fatal(err)
-	}
-
 	transactor := bind.NewKeyedTransactor(privateKey)
-
-	// transactor.Nonce = big.NewInt(int64(nonce))
-	// transactor.Value = big.NewInt(0)     // in wei
-
-	fmt.Printf("Transactor: %+v; GasPriceUnused: %v; From: %v; PubKey: %v \n", transactor, gasPrice, privateKey, publicKey)
 
 	deployGravity(&addresses, fromAddress, ethConnection, transactor, &config)
 	deployIBPort(&addresses, fromAddress, ethConnection, transactor, &config)

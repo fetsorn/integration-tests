@@ -10,7 +10,7 @@ import (
     "crypto/ecdsa"
 	"math/rand"
 	"rh_tests/helpers"
-	"rh_tests/api/nebula"
+	"github.com/Gravity-Tech/gravity-core/common/contracts"
 	"rh_tests/api/ibport"
 	"rh_tests/api/luport"
 	"github.com/ethereum/go-ethereum/crypto"
@@ -23,8 +23,8 @@ import (
 var ethConnection *ethclient.Client
 var config helpers.Config
 var addresses helpers.DeployedAddresses
-var nebulaContract *nebula.Nebula
-var nebulaReverseContract *nebula.Nebula
+var nebulaContract *contracts.Nebula
+var nebulaReverseContract *contracts.Nebula
 var ibportContract *ibport.IBPort
 var luportContract *luport.LUPort
 
@@ -60,11 +60,11 @@ func ConnectClient() bool {
 
 func BindContracts() {
 	var err error
-	nebulaContract, err = nebula.NewNebula(common.HexToAddress(addresses.Nebula), ethConnection)
+	nebulaContract, err = contracts.NewNebula(common.HexToAddress(addresses.Nebula), ethConnection)
     if err != nil {
         log.Fatal(err)
     }
-	nebulaReverseContract, err = nebula.NewNebula(common.HexToAddress(addresses.NebulaReverse), ethConnection)
+	nebulaReverseContract, err = contracts.NewNebula(common.HexToAddress(addresses.NebulaReverse), ethConnection)
     if err != nil {
         log.Fatal(err)
     }
