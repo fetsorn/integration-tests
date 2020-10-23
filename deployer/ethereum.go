@@ -79,9 +79,9 @@ func (deployer *EthDeployer) DeployPort(gravityAddress string, dataType int, erc
 	var portAddress common.Address
 	switch portType {
 	case IBPort:
-		portAddress, tx, _, err = luport.DeployLUPort(deployer.transactor, deployer.ethClient, nebulaAddress, erc20Address)
-	case LUPort:
 		portAddress, tx, _, err = ibport.DeployIBPort(deployer.transactor, deployer.ethClient, nebulaAddress, erc20Address)
+	case LUPort:
+		portAddress, tx, _, err = luport.DeployLUPort(deployer.transactor, deployer.ethClient, nebulaAddress, erc20Address)
 	}
 	if err != nil {
 		return nil, err
