@@ -65,7 +65,6 @@ type DeploymentConfigFile struct {
 	SubscriberContractSeed string
 
 	// TEMP:
-	OraclesPubKeyList      []string
 	ConsulsAddressList     []string
 }
 

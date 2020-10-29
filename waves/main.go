@@ -63,7 +63,6 @@ func Deploy() (*DeploymentConfig, error) {
 	testConfig.Client = wClient
 	testConfig.Helper = helpers.NewClientHelper(testConfig.Client)
 
-	testConfig.Oracles = cfg.OraclesPubKeyList
 	testConfig.Consuls = cfg.ConsulsAddressList
 
 	testConfig.Gravity, err = GenerateAddressFromSeed(cfg.ChainId, cfg.GravityContractSeed)
@@ -164,10 +163,7 @@ func Deploy() (*DeploymentConfig, error) {
 		return nil, err
 	}
 
-	var oraclesString []string
-	for _, v := range testConfig.Oracles {
-		oraclesString = append(oraclesString, v)
-	}
+	oraclesString := make([]string, 0)
 	err = deployer.DeployNebulaWaves(testConfig.Client, testConfig.Helper, nebulaScript, testConfig.Gravity.Address,
 		testConfig.Sub.Address, oraclesString, BftValue, contracts.BytesType, cfg.ChainId, testConfig.Nebula.Secret, testConfig.Ctx)
 	if err != nil {
