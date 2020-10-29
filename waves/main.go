@@ -64,7 +64,7 @@ func Deploy() (*DeploymentConfig, error) {
 	testConfig.Client = wClient
 	testConfig.Helper = helpers.NewClientHelper(testConfig.Client)
 
-	testConfig.Consuls = cfg.ConsulsAddressList
+	testConfig.Consuls = cfg.ConsulsPubKeys
 
 	testConfig.Gravity, err = GenerateAddressFromSeed(cfg.ChainId, cfg.GravityContractSeed)
 	if err != nil {
