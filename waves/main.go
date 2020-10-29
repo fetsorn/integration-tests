@@ -27,6 +27,7 @@ var operation, configFile string
 func init() {
 	flag.StringVar(&operation, "operation", DeployOperation, "What action to perform")
 	flag.StringVar(&configFile, "config", "config.json", "Config file to read from")
+	flag.Parse()
 }
 
 func main() {
