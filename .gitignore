@@ -1,6 +1,7 @@
 addresses.json
 cache
 waves/config.json
+waves/rh_tests
 solidity/0.7/config.json
 solidity/0.7/config.devnet.json
 deploy-eth-devnet.sh

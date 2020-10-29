@@ -1,4 +1,4 @@
-package waves
+package main
 
 import (
 	"bytes"
@@ -19,8 +19,8 @@ import (
 
 	"github.com/wavesplatform/gowaves/pkg/crypto"
 
-	"rh_tests/helpers"
 	wavesClient "github.com/wavesplatform/gowaves/pkg/client"
+	"rh_tests/helpers"
 )
 
 const (
@@ -29,19 +29,6 @@ const (
 	OracleCount = 5
 	Wavelet     = 100000000
 )
-
-type TestPulseConfig struct {
-	Helper helpers.ClientHelper
-	Client *wavesClient.Client
-	Ctx    context.Context
-
-	Gravity *Account
-	Nebula  *Account
-	Sub     *Account
-
-	Consuls []*Account
-	Oracles []*Account
-}
 
 var config *TestPulseConfig
 var tests = map[string]func(t *testing.T){
