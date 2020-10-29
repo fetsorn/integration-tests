@@ -19,11 +19,6 @@ import (
 )
 
 const (
-	BftValue    = 3
-	Wavelet     = 1e8
-)
-
-const (
 	DeployOperation = "deploy"
 )
 
@@ -48,6 +43,11 @@ func main() {
 }
 
 func Deploy() (*DeploymentConfig, error) {
+	const (
+		BftValue    = 3
+		Wavelet     = 1e8
+	)
+
 	var testConfig DeploymentConfig
 	testConfig.Ctx = context.Background()
 
