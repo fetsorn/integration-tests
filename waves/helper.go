@@ -67,12 +67,6 @@ type DeploymentConfigFile struct {
 	// TEMP:
 	OraclesPubKeyList      []string
 	ConsulsAddressList     []string
-	//GravityScriptFile string
-	//NebulaScriptFile  string
-	//SubMockScriptFile string
-	//NodeUrl           string
-	//DistributionSeed  string
-	//ChainId           byte
 }
 
 
