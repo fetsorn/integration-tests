@@ -114,10 +114,6 @@ func Deploy() (*DeploymentConfig, error) {
 	if err != nil {
 		return nil, err
 	}
-	oracleRecipient, err := proto.NewRecipientFromString(testConfig.Oracles[0])
-	if err != nil {
-		return nil, err
-	}
 
 	massTx := &proto.MassTransferWithProofs{
 		Type:      proto.MassTransferTransaction,
@@ -137,10 +133,6 @@ func Deploy() (*DeploymentConfig, error) {
 			{
 				Amount:    2 * Wavelet,
 				Recipient: subAddressRecipient,
-			},
-			{
-				Amount:    2 * Wavelet,
-				Recipient: oracleRecipient,
 			},
 		},
 		Attachment: &proto.LegacyAttachment{},
