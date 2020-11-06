@@ -1,3 +1,9 @@
 [submodule "docker/geth-bsc/bsc"]
 	path = docker/geth-bsc/bsc
 	url = https://github.com/binance-chain/bsc.git
+[submodule "core"]
+	path = core
+	url = https://github.com/Gravity-Tech/gravity-core.git
+[submodule "gateway"]
+	path = gateway
+	url = https://github.com/Gravity-Tech/gateway.git
