@@ -9,7 +9,7 @@ import (
 
 	"github.com/Gravity-Tech/gateway/abi/ethereum/ibport"
 	"github.com/Gravity-Tech/gateway/abi/ethereum/luport"
-	"github.com/Gravity-Tech/gravity-core/common/contracts"
+	"github.com/Gravity-Tech/gravity-core/abi/ethereum"
 
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 	"github.com/ethereum/go-ethereum/common"
@@ -59,7 +59,7 @@ func (deployer *EthDeployer) DeployPort(gravityAddress string, dataType int, erc
 		return nil, err
 	}
 
-	nebulaAddress, tx, nebula, err := contracts.DeployNebula(
+	nebulaAddress, tx, nebula, err := ethereum.DeployNebula(
 		deployer.transactor,
 		deployer.ethClient,
 		uint8(dataType),
@@ -160,7 +160,7 @@ func (deployer *EthDeployer) DeployGravity(consuls [5]string, bftCoefficient int
 		consulsAddress = append(consulsAddress, common.HexToAddress(v))
 	}
 
-	gravityAddress, tx, _, err := contracts.DeployGravity(deployer.transactor, deployer.ethClient, consulsAddress[:], big.NewInt(int64(bftCoefficient)))
+	gravityAddress, tx, _, err := ethereum.DeployGravity(deployer.transactor, deployer.ethClient, consulsAddress[:], big.NewInt(int64(bftCoefficient)))
 	if err != nil {
 		return "", err
 	}
