@@ -44,11 +44,9 @@ func NewEthDeployer(ethClient *ethclient.Client, transactor *bind.TransactOpts) 
 func (deployer *EthDeployer) DeployPort(gravityAddress string, dataType int, erc20Setting config.NewERC20,
 	oracles []common.Address, bftCoefficient int, portType PortType, ctx context.Context) (*GatewayPort, error) {
 
-	erc20Address, tx, erc20Token, err := erc20.DeployToken(
+	erc20Address, tx, erc20Token, err := erc20.DeployUSDN(
 		deployer.transactor,
 		deployer.ethClient,
-		erc20Setting.Name,
-		erc20Setting.Symbol,
 	)
 	if err != nil {
 		return nil, err
@@ -101,7 +99,7 @@ func (deployer *EthDeployer) DeployPort(gravityAddress string, dataType int, erc
 		owner = common.HexToAddress(erc20Setting.TokenOwnerForLUPort)
 	}
 
-	tx, err = erc20Token.AddMinter(deployer.transactor, owner)
+	tx, err = erc20Token.TransferOwnership(deployer.transactor, owner)
 	if err != nil {
 		return nil, err
 	}
@@ -141,7 +139,7 @@ func (deployer *EthDeployer) Fauset(erc20Address string, receiver string, amount
 
 	value := big.NewInt(int64(amount))
 	value.Mul(value, big.NewInt(0).Exp(big.NewInt(10), big.NewInt(int64(decimals)), nil))
-	tx, err := erc20Token.Mint(deployer.transactor, common.HexToAddress(receiver), value)
+	tx, err := erc20Token.Deposit(deployer.transactor, common.HexToAddress(receiver), value)
 	if err != nil {
 		return "", err
 	}
