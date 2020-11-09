@@ -5,9 +5,9 @@ import (
 	"integration-test/config"
 	"math/big"
 
-	"github.com/Gravity-Tech/gateway/abi/ethereum/erc20"
+	erc20 "github.com/Gravity-Tech/gateway/abi/ethereum/usdn-erc20"
 
-	"github.com/Gravity-Tech/gateway/abi/ethereum/ibport"
+	ibport "github.com/Gravity-Tech/gateway/abi/ethereum/usdn-ibport"
 	"github.com/Gravity-Tech/gateway/abi/ethereum/luport"
 	"github.com/Gravity-Tech/gravity-core/common/contracts"
 

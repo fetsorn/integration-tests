@@ -21,6 +21,10 @@ github.com/ChainSafe/go-schnorrkel v0.0.0-20200405005733-88cbf1b4c40d h1:nalkkPQ
 github.com/ChainSafe/go-schnorrkel v0.0.0-20200405005733-88cbf1b4c40d/go.mod h1:URdX5+vg25ts3aCh8H5IFZybJYKWhJHYMTnf+ULtoC4=
 github.com/Gravity-Tech/gateway v0.0.0-20201022230333-092c2f1efb8f h1:/QoeJPGGHef6pwoaO37Ougs/xYQx3t416Df9/w24+A0=
 github.com/Gravity-Tech/gateway v0.0.0-20201022230333-092c2f1efb8f/go.mod h1:JmNcu4ZgdKWm/galwciLNOfWeApNF2HlKztP41FINSo=
+github.com/Gravity-Tech/gateway v0.0.0-20201109204328-49a8282e6a54 h1:f7hvufy7GGSvJ4EjbdRAM1qAwU/2K08PJ/Z1uC++A6Q=
+github.com/Gravity-Tech/gateway v0.0.0-20201109204328-49a8282e6a54/go.mod h1:JmNcu4ZgdKWm/galwciLNOfWeApNF2HlKztP41FINSo=
+github.com/Gravity-Tech/gateway v0.0.0-20201109211346-32739f97d668 h1:r616BlwMcI2yrbQtrVb/ycjtuG4nNyvdv+8rItk8U2Y=
+github.com/Gravity-Tech/gateway v0.0.0-20201109211346-32739f97d668/go.mod h1:JmNcu4ZgdKWm/galwciLNOfWeApNF2HlKztP41FINSo=
 github.com/Gravity-Tech/gravity-core v1.0.1 h1:yehR/yznOdhKP0s3JglgEW00HN8l3QKageu3dAPJfy8=
 github.com/Gravity-Tech/gravity-core v1.0.1/go.mod h1:Rejwy5UHrpjUwueUIQ8CtDKaPObAedU6br6t6YSZIf0=
 github.com/Gravity-Tech/gravity-core v1.0.2-0.20201022222924-4f5108a4d6c5 h1:kachP3D2GjUFWyUB7G5rYaA6P5aq0h7GYWdJEUD3+Mw=
