@@ -7,9 +7,9 @@ import (
 
 	erc20 "github.com/Gravity-Tech/gateway/abi/ethereum/usdn-erc20"
 
-	ibport "github.com/Gravity-Tech/gateway/abi/ethereum/usdn-ibport"
 	"github.com/Gravity-Tech/gateway/abi/ethereum/luport"
-	"github.com/Gravity-Tech/gravity-core/common/contracts"
+	ibport "github.com/Gravity-Tech/gateway/abi/ethereum/usdn-ibport"
+	"github.com/Gravity-Tech/gravity-core/abi/ethereum"
 
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 	"github.com/ethereum/go-ethereum/common"
@@ -59,7 +59,7 @@ func (deployer *EthDeployer) DeployPort(gravityAddress string, dataType int, erc
 		return nil, err
 	}
 
-	nebulaAddress, tx, nebula, err := contracts.DeployNebula(
+	nebulaAddress, tx, nebula, err := ethereum.DeployNebula(
 		deployer.transactor,
 		deployer.ethClient,
 		uint8(dataType),
@@ -129,7 +129,7 @@ func (deployer *EthDeployer) DeployPort(gravityAddress string, dataType int, erc
 }
 
 func (deployer *EthDeployer) Fauset(erc20Address string, receiver string, amount int64, ctx context.Context) (string, error) {
-	erc20Token, err := erc20.NewToken(common.HexToAddress(erc20Address), deployer.ethClient)
+	erc20Token, err := erc20.NewUSDN(common.HexToAddress(erc20Address), deployer.ethClient)
 	if err != nil {
 		return "", err
 	}
@@ -160,7 +160,7 @@ func (deployer *EthDeployer) DeployGravity(consuls [5]string, bftCoefficient int
 		consulsAddress = append(consulsAddress, common.HexToAddress(v))
 	}
 
-	gravityAddress, tx, _, err := contracts.DeployGravity(deployer.transactor, deployer.ethClient, consulsAddress[:], big.NewInt(int64(bftCoefficient)))
+	gravityAddress, tx, _, err := ethereum.DeployGravity(deployer.transactor, deployer.ethClient, consulsAddress[:], big.NewInt(int64(bftCoefficient)))
 	if err != nil {
 		return "", err
 	}
