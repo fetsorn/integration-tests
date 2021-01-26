@@ -1,23 +1,23 @@
 package main
 
 import (
-	"testing"
+	"context"
+	"crypto/ecdsa"
 	"encoding/hex"
-    "os"
-    "log"
-	"math/big"
-    "context"
-    "crypto/ecdsa"
-	"math/rand"
-	"rh_tests/helpers"
 	"github.com/Gravity-Tech/gravity-core/common/contracts"
-	"rh_tests/api/ibport"
-	"rh_tests/api/luport"
-	"github.com/ethereum/go-ethereum/crypto"
-    "github.com/ethereum/go-ethereum/accounts/abi/bind"
-    "github.com/ethereum/go-ethereum/ethclient"
+	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/core/types"
+	"github.com/ethereum/go-ethereum/crypto"
+	"github.com/ethereum/go-ethereum/ethclient"
+	"log"
+	"math/big"
+	"math/rand"
+	"os"
+	"rh_tests/api/ibport"
+	"rh_tests/api/luport"
+	"rh_tests/helpers"
+	"testing"
 )
 
 var ethConnection *ethclient.Client
@@ -91,13 +91,13 @@ func signData(dataHash [32]byte, validSignsCount int, isReverse bool) (*big.Int)
     publicKey := privateKey.Public()
     publicKeyECDSA, ok := publicKey.(*ecdsa.PublicKey)
     if !ok {
-        log.Fatal("error casting public key to ECDSA")
+       log.Fatal("error casting public key to ECDSA")
     }
 
     fromAddress := crypto.PubkeyToAddress(*publicKeyECDSA)
     nonce, err := ethConnection.PendingNonceAt(context.Background(), fromAddress)
     if err != nil {
-        log.Fatal(err)
+       log.Fatal(err)
     }
 
     gasPrice, err := ethConnection.SuggestGasPrice(context.Background())
@@ -105,11 +105,10 @@ func signData(dataHash [32]byte, validSignsCount int, isReverse bool) (*big.Int)
         log.Fatal(err)
     }
 
-    auth := bind.NewKeyedTransactor(privateKey)
-    auth.Nonce = big.NewInt(int64(nonce))
-    auth.Value = big.NewInt(0)     // in wei
-    auth.GasLimit = uint64(300000) // in units
-    auth.GasPrice = gasPrice
+	auth := bind.NewKeyedTransactor(privateKey)
+	auth.Nonce = big.NewInt(int64(nonce))
+	auth.GasLimit = uint64(8000000) // in units
+	auth.GasPrice = gasPrice
 
     for position, validatorKey := range config.OraclePK {
         validatorEthKey, _ := crypto.HexToECDSA(validatorKey)
@@ -204,7 +203,17 @@ func sendData(key string, value []byte, blockNumber *big.Int, subscriptionId [32
     if err != nil {
         log.Fatal(err)
     }
+
+	gasPrice, err := ethConnection.SuggestGasPrice(context.Background())
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	auth := bind.NewKeyedTransactor(privateKey)
+	auth.GasLimit = uint64(8000000) // in units
+	auth.GasPrice = gasPrice
+
+
 	if !isReverse {
 		tx, err := nebulaContract.SendValueToSubByte(auth, value, blockNumber, subscriptionId)
 		if err != nil {
@@ -314,7 +323,15 @@ func TestChangeStatusOk(t *testing.T) {
 		t.Error(err)
 	}
 
+
+	gasPrice, err := ethConnection.SuggestGasPrice(context.Background())
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	auth := bind.NewKeyedTransactor(privateKey)
+	auth.GasLimit = uint64(8000000) // in units
+	auth.GasPrice = gasPrice
 
 	tx, err := ibportContract.CreateTransferUnwrapRequest(auth, big.NewInt(10000000), dummyAddress)
     if err != nil {
@@ -365,7 +382,14 @@ func TestLock(t *testing.T) {
 		t.Error(err)
 	}
 
+	gasPrice, err := ethConnection.SuggestGasPrice(context.Background())
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	auth := bind.NewKeyedTransactor(privateKey)
+	auth.GasLimit = uint64(8000000) // in units
+	auth.GasPrice = gasPrice
 
 	tx, err := luportContract.CreateTransferUnwrapRequest(auth, amount, dummyAddress)
 	if err != nil {
@@ -445,7 +469,14 @@ func TestApprove(t *testing.T) {
 		t.Error(err)
 	}
 
+	gasPrice, err := ethConnection.SuggestGasPrice(context.Background())
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	auth := bind.NewKeyedTransactor(privateKey)
+	auth.GasLimit = uint64(8000000) // in units
+	auth.GasPrice = gasPrice
 
 	tx, err := luportContract.CreateTransferUnwrapRequest(auth, amount, dummyAddress)
 	if err != nil {

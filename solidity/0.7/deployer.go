@@ -107,7 +107,7 @@ func deployLUPort(addresses *helpers.DeployedAddresses, fromAddress common.Addre
 	if err != nil {
 		log.Fatal(err)
 	}
-	bind.WaitMined(context.Background(), ethConnection, tx)
+	_, err = bind.WaitMined(context.Background(), ethConnection, tx)
 
 	addresses.ERC20 = common.Bytes2Hex(erc20Addr.Bytes())
 
@@ -116,33 +116,33 @@ func deployLUPort(addresses *helpers.DeployedAddresses, fromAddress common.Addre
 	if err != nil {
 		log.Fatal(err)
 	}
-	bind.WaitMined(context.Background(), ethConnection, tx)
+	_, err = bind.WaitMined(context.Background(), ethConnection, tx)
 	addresses.NebulaReverse = common.Bytes2Hex(nebulaReverseAddr.Bytes())
 
 	luportAddress, tx, _, err := luport.DeployLUPort(transactor, ethConnection, nebulaReverseAddr, erc20Addr)
 	if err != nil {
 		log.Fatal(err)
 	}
-	bind.WaitMined(context.Background(), ethConnection, tx)
+	_, err = bind.WaitMined(context.Background(), ethConnection, tx)
 	addresses.LUPort = common.Bytes2Hex(luportAddress.Bytes())
 
 	tx, err = token.Mint(transactor, fromAddress, big.NewInt(100000000000))
 	if err != nil {
 		log.Fatal(err)
 	}
-	bind.WaitMined(context.Background(), ethConnection, tx)
+	_, err = bind.WaitMined(context.Background(), ethConnection, tx)
 
 	tx, err = token.Mint(transactor, luportAddress, big.NewInt(100000000000))
 	if err != nil {
 		log.Fatal(err)
 	}
-	bind.WaitMined(context.Background(), ethConnection, tx)
+	_, err = bind.WaitMined(context.Background(), ethConnection, tx)
 
 	tx, err = token.Approve(transactor, luportAddress, big.NewInt(100000000000))
 	if err != nil {
 		log.Fatal(err)
 	}
-	bind.WaitMined(context.Background(), ethConnection, tx)
+	_, err = bind.WaitMined(context.Background(), ethConnection, tx)
 
 	tx, err = nebula.Subscribe(transactor, luportAddress, 1, big.NewInt(0))
 	if err != nil {
@@ -206,7 +206,15 @@ func main() {
 
 	fromAddress := crypto.PubkeyToAddress(*publicKeyECDSA)
 
+
+	gasPrice, err := ethConnection.SuggestGasPrice(context.Background())
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	transactor := bind.NewKeyedTransactor(privateKey)
+	transactor.GasLimit = uint64(8000000) // in units
+	transactor.GasPrice = gasPrice
 
 	deployGravity(&addresses, fromAddress, ethConnection, transactor, &config)
 	deployIBPort(&addresses, fromAddress, ethConnection, transactor, &config)
